@@ -4,9 +4,15 @@
   "description": "Small Node and Python tools for artist workflows",
   "main": "src/index.js",
   "scripts": {
-    "test": "node tests/node/test.js"
+    "test": "node tests/node/test.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "Nuthatch",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
 }
