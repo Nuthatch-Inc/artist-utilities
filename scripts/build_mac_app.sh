@@ -22,6 +22,11 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
 SPEC_PATH="$PROJECT_ROOT/build/artist_utilities.spec"
 
+echo "SPEC_PATH: $SPEC_PATH"
+ls -la "$SPEC_PATH" || true
+
+cd "$PROJECT_ROOT"
+
 if [[ ! -f "$SPEC_PATH" ]]; then
   echo "Spec file not found at: $SPEC_PATH"
   echo "Current dir: $(pwd)"
