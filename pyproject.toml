@@ -1,0 +1,6 @@
+[project]
+name = "artist-utilities-py"
+version = "0.1.0"
+
+[tool.pytest]
+testpaths = ["tests_py"]
