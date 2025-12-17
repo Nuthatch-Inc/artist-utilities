@@ -7,8 +7,12 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # The deploy step needs write access to repository contents so it can push to gh-pages.
+    # If your organization blocks GITHUB_TOKEN from pushing to branches, create a scoped
+    # deploy Personal Access Token and store it in `secrets.DEPLOY_TOKEN`, then set
+    # `token: ${{ secrets.DEPLOY_TOKEN }}` in the deploy action's inputs.
     permissions:
-      contents: read
+      contents: write
       pages: write
       id-token: write
     steps:
