@@ -27,24 +27,24 @@ ls -la "$SPEC_PATH" || true
 
 cd "$PROJECT_ROOT"
 
+# Run PyInstaller using the spec
+# Use the project's Python to invoke PyInstaller directly to avoid cd/path issues on CI
 if [[ ! -f "$SPEC_PATH" ]]; then
   echo "Spec file not found at: $SPEC_PATH"
-  echo "Current dir: $(pwd)"
-  ls -la "$PROJECT_ROOT" || true
   exit 1
 fi
 
-# Clean previous builds
-rm -rf build dist Artist-Utilities-macos.dmg
-
-# Run PyInstaller using the spec
-cd "$PROJECT_ROOT/build"
-echo "Running PyInstaller in $(pwd)"
-pyinstaller --noconfirm --clean "artist_utilities.spec" || {
-  echo "PyInstaller failed. Listing build dir contents:"; ls -la .; exit 1
+echo "Invoking PyInstaller via: $PYTHON -m PyInstaller --noconfirm --clean $SPEC_PATH"
+$PYTHON -m PyInstaller --noconfirm --clean "$SPEC_PATH" || {
+  echo "PyInstaller failed. Listing build dir contents:"; ls -la "${PROJECT_ROOT}/build" || true; exit 1
 }
 
-# Move back to project root
+# Ensure dist dir exists
+if [[ ! -d "$PROJECT_ROOT/dist" ]]; then
+  echo "Build did not produce a dist/ directory. Listing project root:"; ls -la "$PROJECT_ROOT"; exit 1
+fi
+
+# Move back to project root (ensures subsequent steps run relative to root)
 cd "$PROJECT_ROOT"
 
 APP_NAME="Artist Utilities.app"
