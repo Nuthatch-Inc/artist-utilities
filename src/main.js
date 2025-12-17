@@ -61,3 +61,8 @@ downloadBtn.addEventListener('click', () => {
 
 // Initialize UI
 updateScaleDisplay();
+
+// Show test change for verification and log for console
+console.log('Test-Change applied');
+const testBadge = document.getElementById('testBadge');
+if (testBadge) testBadge.textContent = 'Test-Change applied';

@@ -35,7 +35,7 @@ class ArtistUtilitiesApp:
         # Welcome message
         welcome_label = ttk.Label(
             main_frame, 
-            text="Welcome! This tool helps you process images.\n\nFeatures coming soon:\n• Resize images\n• Rename files in batch\n• Convert formats",
+            text="Welcome! This tool helps you process images.\n\nFeatures coming soon:\n• Resize images\n• Rename files in batch\n• Convert formats\n\nTest - change applied",
             style="Info.TLabel",
             justify=tk.CENTER
         )
