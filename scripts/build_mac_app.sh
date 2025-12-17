@@ -38,7 +38,14 @@ fi
 rm -rf build dist Artist-Utilities-macos.dmg
 
 # Run PyInstaller using the spec
-pyinstaller --noconfirm --clean "$SPEC_PATH"
+cd "$PROJECT_ROOT/build"
+echo "Running PyInstaller in $(pwd)"
+pyinstaller --noconfirm --clean "artist_utilities.spec" || {
+  echo "PyInstaller failed. Listing build dir contents:"; ls -la .; exit 1
+}
+
+# Move back to project root
+cd "$PROJECT_ROOT"
 
 APP_NAME="Artist Utilities.app"
 DMG_NAME="Artist-Utilities-macos.dmg"
