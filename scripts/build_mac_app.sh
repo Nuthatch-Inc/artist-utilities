@@ -34,9 +34,9 @@ if [[ ! -f "$SPEC_PATH" ]]; then
   exit 1
 fi
 
-# Use --codesign-identity - to explicitly skip code signing (no Apple Developer license)
-echo "Invoking PyInstaller via: $PYTHON -m PyInstaller --noconfirm --clean --codesign-identity - $SPEC_PATH"
-$PYTHON -m PyInstaller --noconfirm --clean --codesign-identity - "$SPEC_PATH" || {
+# Code signing is disabled in the spec file (codesign_identity='-')
+echo "Invoking PyInstaller via: $PYTHON -m PyInstaller --noconfirm --clean $SPEC_PATH"
+$PYTHON -m PyInstaller --noconfirm --clean "$SPEC_PATH" || {
   echo "PyInstaller failed. Listing build dir contents:"; ls -la "${PROJECT_ROOT}/build" || true; exit 1
 }
 

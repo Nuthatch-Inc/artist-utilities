@@ -52,10 +52,11 @@ coll = COLLECT(
 icon_path = os.path.abspath('resources/icon.icns')
 use_icon = os.path.isfile(icon_path) and os.path.getsize(icon_path) > 1024
 
-# Create macOS app bundle
+# Create macOS app bundle (codesign_identity='-' skips signing - no Apple Developer license)
 app = BUNDLE(
     coll,
     name='Artist Utilities.app',
     icon=icon_path if use_icon else None,
     bundle_identifier='com.nuthatch.artist-utilities',
+    codesign_identity='-',
 )
