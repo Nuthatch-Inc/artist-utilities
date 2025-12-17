@@ -10,6 +10,28 @@ block_cipher = None
 # Collect all PySide6 related files to ensure Qt plugins / libs included
 _datas, _binaries, _hiddenimports = collect_all('PySide6')
 
+# Deduplicate datas and binaries by destination to avoid symlink conflicts when
+# PyInstaller assembles frameworks (some Qt frameworks contain identical
+# 'Versions/Current/Resources' entries which can cause FileExistsError).
+def _dedupe_by_dest(entries):
+    seen = set()
+    out = []
+    for entry in entries:
+        # entry formats can vary: (src, dest) or (src, dest, type)
+        try:
+            dest = entry[1]
+        except Exception:
+            dest = os.path.basename(entry[0])
+        if dest in seen:
+            continue
+        seen.add(dest)
+        out.append(entry)
+    return out
+
+_datas = _dedupe_by_dest(_datas)
+_binaries = _dedupe_by_dest(_binaries)
+_hiddenimports = list(dict.fromkeys(_hiddenimports))
+
 script_path = os.path.abspath(os.path.join(os.getcwd(), 'src_py', 'app.py'))
 
 a = Analysis(
