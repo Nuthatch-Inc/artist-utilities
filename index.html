@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Artist Utilities (coming soon)</title>
+  <script type="module" crossorigin src="/assets/index-4bCSIltW.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-lwHdMc0d.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Artist Utilities</h1>
+    <p class="lead">Coming soon — test features here.</p>
+
+    <section class="uploader">
+      <label class="btn">
+        Select Image
+        <input id="fileInput" type="file" accept="image/*" hidden />
+      </label>
+      <div id="fileInfo" class="file-info">No file selected</div>
+    </section>
+
+    <section class="preview" aria-live="polite">
+      <canvas id="previewCanvas"></canvas>
+    </section>
+
+    <section class="controls">
+      <label>Scale: <input id="scaleRange" type="range" min="10" max="200" value="100"> <span id="scaleVal">100%</span></label>
+      <button id="downloadBtn" disabled>Download Edited Image</button>
+    </section>
+
+    <footer class="note">Local-only demo: your files stay in your browser.</footer>
+  </main>
+
+</body>
+</html>
