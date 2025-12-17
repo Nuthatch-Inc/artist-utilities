@@ -18,7 +18,9 @@ jobs:
         with:
           node-version: '20'
       - name: Install dependencies
-        run: npm ci
+        run: |
+          # Prefer a clean install, but fall back to `npm install` if the lockfile is missing
+          npm ci || npm install --no-audit --no-fund
       - name: Build
         run: npm run build
 
