@@ -17,11 +17,18 @@ def _dedupe_by_dest(entries):
     seen = set()
     out = []
     for entry in entries:
-        # entry formats can vary: (src, dest) or (src, dest, type)
+        # entry formats can vary: (src, dest) or (src, dest, type) or simple str paths
+        dest = None
         try:
-            dest = entry[1]
+            if isinstance(entry, (list, tuple)) and len(entry) >= 2:
+                dest = entry[1]
+            elif isinstance(entry, str):
+                dest = os.path.basename(entry)
+            else:
+                # Fallback: take basename of first element if possible
+                dest = os.path.basename(entry[0])
         except Exception:
-            dest = os.path.basename(entry[0])
+            dest = str(entry)
         if dest in seen:
             continue
         seen.add(dest)
@@ -77,5 +84,5 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='Artist Utilities.app',
-    icon='resources/icon.icns'
+    icon=(os.path.abspath('resources/icon.icns') if os.path.isfile('resources/icon.icns') and os.path.getsize('resources/icon.icns') > 1024 else None)
 )
