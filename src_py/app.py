@@ -1,61 +1,92 @@
-"""Simple PySimpleGUI (Qt preferred) wireframe for Artist Utilities.
+"""Artist Utilities - Simple GUI for image processing.
 
+Uses tkinter (built into Python) for maximum compatibility and easy packaging.
 Run: python src_py/app.py
 """
 
-# Prefer Qt backend (PySimpleGUIQt). If not available, fallback to PySimpleGUI (Tk).
-try:
-    import PySimpleGUIQt as sg  # type: ignore
-    backend = "qt"
-except Exception:
-    try:
-        import PySimpleGUI as sg  # type: ignore
-        backend = "tk"
-    except ImportError:
-        print("Neither PySimpleGUIQt nor PySimpleGUI is installed.")
-        print("Install Qt backend (recommended):")
-        print("  python3 -m pip install --user PySide6 PySimpleGUIQt")
-        print("Or install Tk backend (if you prefer Tk):")
-        print("  python3 -m pip install --user PySimpleGUI")
-        raise
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+from pathlib import Path
 
-# Basic API sanity check
-if not (hasattr(sg, "Window") and hasattr(sg, "Button")):
-    print("The installed PySimpleGUI variant does not expose expected APIs (Window/Button/etc.).")
-    if backend == "qt":
-        print("Try reinstalling Qt packages:")
-        print("  python3 -m pip uninstall PySide6 PySimpleGUIQt && python3 -m pip install --user PySide6 PySimpleGUIQt")
-    else:
-        print("Try reinstalling Tk packages:")
-        print("  python3 -m pip uninstall PySimpleGUI && python3 -m pip install --user PySimpleGUI")
-    raise SystemExit(1)
+
+class ArtistUtilitiesApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Artist Utilities")
+        self.root.geometry("500x400")
+        self.root.minsize(400, 300)
+        
+        # Configure style
+        style = ttk.Style()
+        style.configure("Title.TLabel", font=("Helvetica", 20, "bold"))
+        style.configure("Info.TLabel", font=("Helvetica", 12))
+        
+        # Main frame with padding
+        main_frame = ttk.Frame(root, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Title
+        title_label = ttk.Label(main_frame, text="Artist Utilities", style="Title.TLabel")
+        title_label.pack(pady=(0, 10))
+        
+        # Separator
+        ttk.Separator(main_frame, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=10)
+        
+        # Welcome message
+        welcome_label = ttk.Label(
+            main_frame, 
+            text="Welcome! This tool helps you process images.\n\nFeatures coming soon:\n• Resize images\n• Rename files in batch\n• Convert formats",
+            style="Info.TLabel",
+            justify=tk.CENTER
+        )
+        welcome_label.pack(pady=20)
+        
+        # Button frame
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(pady=20)
+        
+        # Select files button (placeholder)
+        self.select_btn = ttk.Button(
+            button_frame, 
+            text="Select Images...", 
+            command=self.select_files
+        )
+        self.select_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Quit button
+        quit_btn = ttk.Button(button_frame, text="Quit", command=root.quit)
+        quit_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Status bar
+        self.status_var = tk.StringVar(value="Ready")
+        status_bar = ttk.Label(main_frame, textvariable=self.status_var, relief=tk.SUNKEN)
+        status_bar.pack(fill=tk.X, side=tk.BOTTOM, pady=(10, 0))
+
+    def select_files(self):
+        """Open file dialog to select images."""
+        filetypes = [
+            ("Image files", "*.png *.jpg *.jpeg *.gif *.bmp *.tiff"),
+            ("All files", "*.*")
+        ]
+        files = filedialog.askopenfilenames(
+            title="Select Images",
+            filetypes=filetypes
+        )
+        if files:
+            count = len(files)
+            self.status_var.set(f"Selected {count} file(s)")
+            messagebox.showinfo(
+                "Files Selected", 
+                f"You selected {count} file(s).\n\nProcessing features coming soon!"
+            )
 
 
 def main():
-    print(f"Starting Artist Utilities (backend={backend})")
-
-    try:
-        # theme may not be available in some builds; tolerate failures
-        if hasattr(sg, "theme"):
-            sg.theme("LightBlue")
-    except Exception:
-        print("Unable to set theme — continuing without it.")
-
-    layout = [
-        [sg.Text("Artist Utilities", font=("Any", 20), justification="center")],
-        [sg.HorizontalSeparator()],
-        [sg.Text("Welcome — prototype UI coming soon", justification="center")],
-        [sg.Button("Quit")],
-    ]
-
-    window = sg.Window("Artist Utilities", layout, element_justification="c", resizable=True)
-
-    while True:
-        event, values = window.read()
-        if event in (sg.WIN_CLOSED, "Quit"):
-            break
-
-    window.close()
+    print("Starting Artist Utilities...")
+    root = tk.Tk()
+    app = ArtistUtilitiesApp(root)
+    root.mainloop()
+    print("Artist Utilities closed.")
 
 
 if __name__ == "__main__":
