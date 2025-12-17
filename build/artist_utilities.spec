@@ -29,9 +29,44 @@ def _dedupe_by_dest(entries):
                 dest = os.path.basename(entry[0])
         except Exception:
             dest = str(entry)
-        if dest in seen:
-            continue
-        seen.add(dest)
+
+        # Normalize dest
+        dest_norm = os.path.normpath(dest)
+
+        if dest_norm in seen:
+            # Duplicate destination detected. Try to disambiguate by prefixing
+            # with a framework or parent folder name derived from the source path.
+            src_path = None
+            if isinstance(entry, (list, tuple)) and len(entry) >= 1:
+                src_path = entry[0]
+            elif isinstance(entry, str):
+                src_path = entry
+            if src_path:
+                # Try to find a nearby framework name in the source path
+                fw_name = None
+                parts = src_path.split(os.sep)
+                for p in parts:
+                    if p.endswith('.framework'):
+                        fw_name = p
+                        break
+                if not fw_name:
+                    # Fallback to parent directory name
+                    fw_name = os.path.basename(os.path.dirname(src_path))
+                # Create a new unique dest by prefixing
+                new_dest = os.path.join(fw_name, dest_norm)
+                # update dest_norm to use the new path
+                dest_norm = os.path.normpath(new_dest)
+                # If this new dest is still seen, skip to avoid infinite loop
+                if dest_norm in seen:
+                    continue
+                # When entry is tuple-like, replace the dest in the entry copy
+                if isinstance(entry, (list, tuple)) and len(entry) >= 2:
+                    entry = (entry[0], dest_norm) + tuple(entry[2:])
+                else:
+                    entry = (entry, dest_norm)
+            else:
+                continue
+        seen.add(dest_norm)
         out.append(entry)
     return out
 
