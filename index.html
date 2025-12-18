@@ -3,15 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Artist Utilities (coming soon)</title>
-  <script type="module" crossorigin src="/assets/index-Y-hg5559.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DZurpiBa.css">
+  <title>Artist Utilities</title>
+  <script type="module" crossorigin src="/assets/index-Bjly-vVO.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Cz8WuKq5.css">
 </head>
 <body>
   <main class="container">
     <h1>Artist Utilities</h1>
-    <div id="testBadge" class="test-badge">Test-Change applied</div>
-    <p class="lead">Coming soon — test features here.</p>
+    <p class="lead">Auto-generate 72 DPI + thumbnail versions of your images</p>
+
+    <section class="instructions">
+      <p>1. Select your 300 DPI image</p>
+      <p>2. Click "Process Image"</p>
+      <p>3. Download the ZIP with your folder</p>
+      <p class="small">Creates: title72.jpg (900px) + title_thumb.jpg (150px) in a Title/ folder</p>
+    </section>
 
     <section class="uploader">
       <label class="btn">
@@ -26,11 +32,11 @@
     </section>
 
     <section class="controls">
-      <label>Scale: <input id="scaleRange" type="range" min="10" max="200" value="100"> <span id="scaleVal">100%</span></label>
-      <button id="downloadBtn" disabled>Download Edited Image</button>
+      <button id="processBtn" class="btn btn-primary" disabled>Process Image (72 DPI + Thumbnail)</button>
+      <div id="downloadLinks"></div>
     </section>
 
-    <footer class="note">Local-only demo: your files stay in your browser.</footer>
+    <footer class="note">100% local — your files never leave your browser.</footer>
   </main>
 
 </body>
