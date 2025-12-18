@@ -3,27 +3,83 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Artist Utilities</title>
+  <title>Quick Image Resizer and Thumbnail Maker</title>
   <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
   <main class="container">
-    <h1>Artist Utilities</h1>
-    <p class="lead">Auto-generate 72 DPI + thumbnail versions of your images</p>
-
-    <section class="instructions">
-      <p>1. Select your 300 DPI image</p>
-      <p>2. Click "Process Image"</p>
-      <p>3. Download the ZIP with your folder</p>
-      <p class="small">Creates: title72.jpg (900px) + title_thumb.jpg (150px) in a Title/ folder</p>
-    </section>
+    <h1>Quick Image Resizer and Thumbnail Maker</h1>
+    <p class="lead">Auto-generate web-ready + thumbnail versions of your images</p>
 
     <section class="uploader">
       <label class="btn">
         Select Image
         <input id="fileInput" type="file" accept="image/*" hidden />
       </label>
+      <label class="btn btn-secondary">
+        Select Folder
+        <input id="folderInput" type="file" accept="image/*" webkitdirectory hidden />
+      </label>
       <div id="fileInfo" class="file-info">No file selected</div>
+    </section>
+
+    <section class="size-grid">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>File Name</th>
+            <th>Image DPI</th>
+            <th>Width (in)</th>
+            <th>Height (in)</th>
+            <th>Width (px)</th>
+            <th>Height (px)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Original Image:</td>
+            <td><span id="origName">—</span></td>
+            <td><span id="origDpi">—</span></td>
+            <td><span id="origWidthIn">—</span></td>
+            <td><span id="origHeightIn">—</span></td>
+            <td><span id="origWidthPx">—</span></td>
+            <td><span id="origHeightPx">—</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Small Image:</td>
+            <td><span id="smallName">—</span></td>
+            <td>
+              <select id="smallDpi">
+                <option value="72" selected>72</option>
+                <option value="96">96</option>
+                <option value="150">150</option>
+                <option value="300">300</option>
+              </select>
+            </td>
+            <td><input type="number" id="smallWidthIn" step="0.01" min="0"></td>
+            <td><input type="number" id="smallHeightIn" step="0.01" min="0"></td>
+            <td><input type="number" id="smallWidthPx" step="1" min="1"></td>
+            <td><input type="number" id="smallHeightPx" step="1" min="1" value="900"></td>
+          </tr>
+          <tr>
+            <td class="row-label">Thumbnail:</td>
+            <td><span id="thumbName">—</span></td>
+            <td>
+              <select id="thumbDpi">
+                <option value="72" selected>72</option>
+                <option value="96">96</option>
+                <option value="150">150</option>
+                <option value="300">300</option>
+              </select>
+            </td>
+            <td><input type="number" id="thumbWidthIn" step="0.01" min="0"></td>
+            <td><input type="number" id="thumbHeightIn" step="0.01" min="0"></td>
+            <td><input type="number" id="thumbWidthPx" step="1" min="1"></td>
+            <td><input type="number" id="thumbHeightPx" step="1" min="1" value="150"></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section class="preview" aria-live="polite">
@@ -31,7 +87,8 @@
     </section>
 
     <section class="controls">
-      <button id="processBtn" class="btn btn-primary" disabled>Process Image (72 DPI + Thumbnail)</button>
+      <button id="processBtn" class="btn btn-primary" disabled>Process Image(s)</button>
+      <div id="progressInfo" class="progress-info"></div>
       <div id="downloadLinks"></div>
     </section>
 
