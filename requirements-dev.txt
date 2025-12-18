@@ -1,4 +1,2 @@
 pytest
-PySimpleGUI
-PySide6
-PySimpleGUIQt
+Pillow
